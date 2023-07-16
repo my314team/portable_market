@@ -43,4 +43,6 @@ async def good_view(clb: types.CallbackQuery) -> None:
             logger.error(
                 f"Вероятно, возникла ошибка при регистрации пользователя. TG_ID: {clb.from_user.id}. Информация о пользователе: {user_info}")
 
-    await clb.message.answer_photo(photo, caption=message, parse_mode="HTML", reply_markup=keyboard)
+    await clb.message.edit_media(types.InputMedia(media=types.InputFile(f"images/good_{good_info[0]}.png")))
+    await clb.message.edit_caption(message, parse_mode="HTML")
+    await clb.message.edit_reply_markup(keyboard)

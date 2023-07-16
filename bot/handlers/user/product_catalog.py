@@ -32,4 +32,5 @@ async def product_catalog(msg: types.Message) -> None:
             logger.error(
                 f"Вероятно, возникла ошибка при регистрации пользователя. TG_ID: {msg.from_user.id}. Информация о пользователе: {user_info}")
 
-    await msg.answer_photo(photo, caption=message, parse_mode="HTML", reply_markup=keyboard)
+    await msg.answer_photo(photo=photo, caption=message, parse_mode="HTML", reply_markup=keyboard)
+
