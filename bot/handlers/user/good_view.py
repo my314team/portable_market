@@ -24,8 +24,9 @@ async def good_view(clb: types.CallbackQuery) -> None:
     photo = open(f"images/good_{good_info[0]}.png", "rb")
 
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True)
+
     buttons = [
-        types.InlineKeyboardButton(text=f"Оплатить", callback_data=f"paygood_{good_info[0]}"),
+        types.InlineKeyboardButton(text=f"Оплатить", callback_data=f"create_order_{clb.from_user.id}_{good_info[0]}"),
         types.InlineKeyboardButton(text=f"Проверить оплату", callback_data=f"checkpaygood_{good_info[0]}")
 
     ]

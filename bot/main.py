@@ -6,6 +6,8 @@ from . import handlers
 from .database.methods.users import connect as database_users_connect
 from .database.methods.categories import connect as database_categories_connect
 from .database.methods.goods import connect as database_goods_connect
+from .database.methods.orders import connect as database_orders_connect
+
 from .logs import logger
 
 
@@ -18,6 +20,10 @@ async def __on_start_up(dp: Dispatcher) -> None:
 
     await database_goods_connect.connect()
     logger.debug("Подключение к БД (goods.db) успешно выполнено.")
+
+    await database_orders_connect.connect()
+    logger.debug("Подключение к БД (orders.db) успешно выполнено.")
+
 
 def start_bot():
     bot = Bot(token="6327425346:AAHg1xh_YxInLPyQmYfrzrPQZ0Q-ATrtAyk")
