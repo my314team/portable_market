@@ -23,7 +23,7 @@ async def category_view(clb: types.CallbackQuery) -> None:
     message = f"Список доступных товаров в категории <b>{category_info[2]}</b>\n\nНе нашли нужный товар? Предложите нам его добавить, написав в тех. поддержку!"
     photo = open(f"images/{clb.data}.png", "rb")
 
-    keyboard = types.InlineKeyboardMarkup(resize_keyboard=True)
+    keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
     buttons = [
         types.InlineKeyboardButton(text=f"{g[2]} — {g[3]}₽", callback_data=f"good_{g[0]}") for g in
         (await goods_get.get_all())
