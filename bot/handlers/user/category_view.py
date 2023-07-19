@@ -21,7 +21,11 @@ async def category_view(clb: types.CallbackQuery) -> None:
         return
 
     message = f"Список доступных товаров в категории <b>{category_info[2]}</b>\n\nНе нашли нужный товар? Предложите нам его добавить, написав в тех. поддержку!"
-    photo = open(f"images/{clb.data}.png", "rb")
+    try:
+        photo = open(f"images/{clb.data}.png", "rb")
+    except FileNotFoundError:
+        logger.error(f"Не найдено изображение товара {clb.data} (images/{clb.data}.png).")
+        photo = ""
 
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
     buttons = [
