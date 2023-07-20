@@ -18,6 +18,8 @@ def setup(dp: Dispatcher):
     dp.register_callback_query_handler(faq.no_money_sent, lambda clb: str(clb.data).startswith("qa_no_money_sent"))
     dp.register_callback_query_handler(faq.bot_off, lambda clb: str(clb.data).startswith("qa_bot_off"))
 
+    dp.register_callback_query_handler(create_order.checkpaygood, lambda clb: str(clb.data).startswith("checkpaygood_"))
+
     dp.register_callback_query_handler(category_view.category_view, lambda clb: str(clb.data).startswith("category_"))
     dp.register_callback_query_handler(good_view.good_view, lambda clb: str(clb.data).startswith("good_"))
     dp.register_callback_query_handler(create_order.create_order, lambda clb: str(clb.data).startswith('create_order_'))

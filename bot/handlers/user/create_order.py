@@ -35,3 +35,26 @@ async def create_order(clb: types.CallbackQuery) -> None:
 
     await clb.message.edit_caption('Нажмите еще раз на кнопку "Оплатить", чтобы перейти к оплате.')
     await clb.message.edit_reply_markup(keyboard)
+
+
+async def checkpaygood(clb: types.CallbackQuery) -> None:
+    if clb.from_user is None:
+        return
+
+    keyboard = types.InlineKeyboardMarkup(resize_keyboard=True)
+    buttons = [
+        types.InlineKeyboardButton(text=f"Оплатить", url="https://t.me/portable_market"),
+        types.InlineKeyboardButton(text=f"Проверить оплату",
+                                   callback_data=f"checkpaygood_{str(clb.data.replace('checkpaygood_', ''))}")
+
+    ]
+    keyboard.add(*buttons)
+
+    if True:
+        await clb.message.edit_media(types.InputMedia(media=types.InputFile(f"images/Оплата не прошла.png")))
+        await clb.message.edit_caption(
+            '🚫 Оплата за заказ (№) еще не поступила.\b⚠️ Возможно, вы не оплатили, или оплата еще не дошла до нас.\n\nЕсли вы оплатили, но получили это сообщение, смотрите раздел <b>вопрос-ответ.</b>',
+            parse_mode="HTML", reply_markup=keyboard)
+
+    else:
+        pass
