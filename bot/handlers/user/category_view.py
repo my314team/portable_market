@@ -1,4 +1,5 @@
 from aiogram import types
+from aiogram.utils.exceptions import MessageNotModified
 
 from ...database.methods.users import get as user_get
 from ...database.methods.users import create as user_create
@@ -30,7 +31,7 @@ async def category_view(clb: types.CallbackQuery) -> None:
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
     buttons = [
         types.InlineKeyboardButton(text=f"{g[2]} — {g[3]}₽", callback_data=f"good_{g[0]}") for g in
-        (await goods_get.get_all())
+        (await goods_get.get_all_from_category(category_info[0]))
     ]
     keyboard.add(*buttons)
 
@@ -47,4 +48,7 @@ async def category_view(clb: types.CallbackQuery) -> None:
 
     await clb.message.edit_media(types.InputMedia(media=types.InputFile(f"images/{clb.data}.png")))
     await clb.message.edit_caption(message, parse_mode="HTML")
-    await clb.message.edit_reply_markup(keyboard)
+    try:
+        await clb.message.edit_reply_markup(keyboard)
+    except MessageNotModified:
+        pass
