@@ -30,3 +30,18 @@ async def get_all() -> Union[None, list]:
     db.close()
 
     return result
+
+
+async def get_all_from_category(category_id: int) -> Union[None, list]:
+    db = sqlite3.connect('bot/database/goods.db')
+    cursor = db.cursor()
+
+    cursor.execute(
+        f"SELECT * FROM goods WHERE category_id={category_id}")
+
+    result = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    return result
