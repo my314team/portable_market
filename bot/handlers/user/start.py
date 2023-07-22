@@ -13,8 +13,6 @@ async def start(msg: types.Message) -> None:
     message = f"Добро пожаловать в <b>Portable Market</b>!\n\n❣️ <b>Portable Market</b> - это магазин цифровых товаров прямо в Telegram с низкими ценами, быстрым получением товаров и скоростной поддержкой.\n\n📰 Канал с новостями: @portable_market"
     photo = open("images/Стартовая картинка.png", "rb")
 
-
-
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     buttons = [
         types.KeyboardButton(text="Каталог товаров 🛒"),

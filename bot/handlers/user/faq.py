@@ -265,3 +265,25 @@ async def bot_off(clb: types.CallbackQuery) -> None:
 
     await clb.message.edit_caption(f"<b>Вопрос</b>\n{message[5][0]}\n\n<b>Ответ</b>\n{message[5][1]}",
                                    parse_mode="HTML", reply_markup=get_qa_keyboard())
+
+
+async def reviews(msg: types.Message) -> None:
+    if msg.from_user is None:
+        return
+
+    photo = open("images/Отзывы.png", "rb")
+
+    await msg.answer_photo(photo=photo,
+                           caption="Отзывы публикуются в отдельном канале: @pm_reviews",
+                           parse_mode="HTML")
+
+
+async def support(msg: types.Message) -> None:
+    if msg.from_user is None:
+        return
+
+    photo = open("images/Поддержка.png", "rb")
+
+    await msg.answer_photo(photo=photo,
+                           caption='🤖 Вы обращаетесь в тех.поддержку Portable Market.\nДля начала попробуйте найти ваш вопрос в разделе "Вопрос-Ответ" (кнопка ниже)\n\n 🤔 Не нашли? Обращайтесь к нашему агенту поддержки: @pmarket_support (отвечаем с 10 до 18 по МСК)',
+                           parse_mode="HTML")
