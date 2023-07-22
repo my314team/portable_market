@@ -3,6 +3,7 @@ from aiogram import Dispatcher
 from json import loads
 
 from bot.handlers.user import start, product_catalog, category_view, good_view, create_order, sales, faq
+from bot.handlers.admin import orders as admin_orders
 
 
 def setup(dp: Dispatcher):
@@ -28,3 +29,11 @@ def setup(dp: Dispatcher):
     dp.register_callback_query_handler(category_view.category_view, lambda clb: str(clb.data).startswith("category_"))
     dp.register_callback_query_handler(good_view.good_view, lambda clb: str(clb.data).startswith("good_"))
     dp.register_callback_query_handler(create_order.create_order, lambda clb: str(clb.data).startswith('create_order_'))
+
+    """Админ-панель"""
+
+    dp.register_message_handler(admin_orders.all_unget_orders, text="ап заказы")
+    dp.register_message_handler(admin_orders.give_order, lambda msg: str(msg.text).startswith("ап выдать"))
+    dp.register_callback_query_handler(admin_orders.confirm_order,
+                                       lambda clb: str(clb.data).startswith('confirmorder_'))
+    dp.register_callback_query_handler(admin_orders.bad_order, lambda clb: str(clb.data).startswith('badorder_'))

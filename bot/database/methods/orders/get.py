@@ -17,6 +17,21 @@ async def get(tg_id: int) -> Union[None, list]:
     return result
 
 
+async def get_info(order_id: int) -> Union[None, list]:
+    db = sqlite3.connect('bot/database/orders.db')
+    cursor = db.cursor()
+
+    cursor.execute(
+        f'SELECT * FROM orders WHERE order_id={order_id}')
+
+    result = cursor.fetchall()[-1]
+
+    cursor.close()
+    db.close()
+
+    return result
+
+
 async def get_all() -> Union[None, list]:
     db = sqlite3.connect('bot/database/orders.db')
     cursor = db.cursor()
