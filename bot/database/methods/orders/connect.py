@@ -6,7 +6,7 @@ async def connect() -> None:
     cursor = db.cursor()
 
     cursor.execute(
-        "CREATE TABLE IF NOT EXISTS orders(order_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_tg_id INTEGER, status INTEGER DEFAULT 0, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, finished_at DATETIME, manager_comment TEXT)")
+        "CREATE TABLE IF NOT EXISTS orders(order_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_tg_id INTEGER, status INTEGER DEFAULT 0, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, finished_at DATETIME, manager_comment TEXT, good_id INTEGER)")
 
     db.commit()
 
