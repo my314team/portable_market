@@ -25,21 +25,21 @@ async def anypay_create_order(order_id: int, amount_id: int):
         await api.get_balance()
 
     except AnyPayAPIError as exc:
-        print(exc)
+        logger.error(exc)
 
     bill = await api.create_bill(  # easier way to create payment via SCI
         pay_id=order_id,
-        amount=10,
+        amount=amount_id,
         project_id=11981,
         project_secret='SHwmVER23M3XKEh3C7',
     )
-    print(bill)
+
     return bill.id, bill.url
 
 
 async def anypay_check_order(pay_id: int) -> bool:
     payments = await api.get_payments(project_id=11981, pay_id=pay_id)
-    print(payments)
+
     is_paid = False
 
     for payment in payments:
@@ -73,8 +73,6 @@ async def create_order(clb: types.CallbackQuery) -> None:
 
     pay_id, order_url = await anypay_create_order(order_info[0], int(good_info[3]))
 
-    print(pay_id)
-
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True)
     buttons = [
         types.InlineKeyboardButton(text=f"Оплатить", url=f"{order_url}"),
@@ -96,7 +94,11 @@ async def checkpaygood(clb: types.CallbackQuery) -> None:
     except IndexError:
         return
 
-    check_order_id, pay_id = map(int, clb.data.replace('checkpaygood_', '').split('_'))
+    try:
+        check_order_id, pay_id = map(int, clb.data.replace('checkpaygood_', '').split('_'))
+    except ValueError:
+        await clb.answer("Нажмите кнопку Оплатить")
+        return
 
     if check_order_id != order_info[0]:
         # нарушение валидации запросов

@@ -31,7 +31,7 @@ async def anypay_create_order(order_id: int, amount_id: int):
 
     bill = await api.create_bill(  # easier way to create payment via SCI
         pay_id=order_id,
-        amount=10,
+        amount=amount_id,
         project_id=11981,
         project_secret='SHwmVER23M3XKEh3C7',
     )
