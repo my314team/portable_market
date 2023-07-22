@@ -91,7 +91,10 @@ async def checkpaygood(clb: types.CallbackQuery) -> None:
     if clb.from_user is None:
         return
 
-    order_info = await orders_get.get(clb.from_user.id)
+    try:
+        order_info = await orders_get.get(clb.from_user.id)
+    except IndexError:
+        return
 
     check_order_id, pay_id = map(int, clb.data.replace('checkpaygood_', '').split('_'))
 

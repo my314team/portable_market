@@ -10,6 +10,8 @@ from .database.methods.orders import connect as database_orders_connect
 
 from .logs import logger
 
+from .config import get_bot
+
 
 async def __on_start_up(dp: Dispatcher) -> None:
     await database_users_connect.connect()
@@ -26,8 +28,7 @@ async def __on_start_up(dp: Dispatcher) -> None:
 
 
 def start_bot():
-    bot = Bot(token="6327425346:AAHg1xh_YxInLPyQmYfrzrPQZ0Q-ATrtAyk")
-    dp = Dispatcher(bot, storage=MemoryStorage())
+    dp = Dispatcher(get_bot(), storage=MemoryStorage())
 
     handlers.setup(dp)
 
