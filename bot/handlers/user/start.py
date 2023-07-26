@@ -16,10 +16,10 @@ async def start(msg: types.Message) -> None:
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     buttons = [
         types.KeyboardButton(text="Каталог товаров 🛒"),
-        types.KeyboardButton(text="Акции/Скидки 💰"),
         types.KeyboardButton(text="Отзывы клиентов 📪"),
         types.KeyboardButton(text="Поддержка 📝"),
         types.KeyboardButton(text="Вопрос-Ответ 🔍"),
+        types.KeyboardButton(text="О магазине"),
     ]
     keyboard.add(*buttons)
 

@@ -2,14 +2,15 @@ from aiogram import Dispatcher
 
 from json import loads
 
-from bot.handlers.user import start, product_catalog, category_view, good_view, create_order, sales, faq
+from bot.handlers.user import start, product_catalog, category_view, good_view, create_order, about, faq
 from bot.handlers.admin import orders as admin_orders
 
 
 def setup(dp: Dispatcher):
     dp.register_message_handler(start.start, commands=["start"])
     dp.register_message_handler(product_catalog.product_catalog, text="Каталог товаров 🛒")
-    dp.register_message_handler(sales.sales, text="Акции/Скидки 💰")
+    dp.register_message_handler(about.about, text="Акции/Скидки 💰")
+    dp.register_message_handler(about.about, text="О магазине")
     dp.register_message_handler(faq.faq, text="Вопрос-Ответ 🔍")
     dp.register_message_handler(faq.reviews, text="Отзывы клиентов 📪")
     dp.register_message_handler(faq.support, text="Поддержка 📝")
