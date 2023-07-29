@@ -7,6 +7,7 @@ from ...database.methods.users import create as user_create
 from ...database.methods.categories import get as categories_get
 
 from ...database.methods.goods import get as goods_get
+from ...database.methods.partners import get as partners_get
 
 from ...logs import logger
 
@@ -21,7 +22,7 @@ async def good_view(clb: types.CallbackQuery) -> None:
         logger.error(f"Товар ({clb.data.replace('good_', '')}) не найден в БД. TG_ID: {clb.from_user.id}.")
         return
 
-    message = f"Товар: <b>{good_info[2]}</b>\nЦена: {good_info[3]}₽\n\n➖ Описание товара: {good_info[10]}\n\n🏷️ Вам осталось лишь оплатить заказ"
+    message = f"Товар: <b>{good_info[2]}</b>\nВаша цена: {good_info[3] * (1 - (await partners_get.get_by_promo((await user_get.get(clb.from_user.id))[7]))[5] / 100)} <s>{good_info[3]}</s>₽\n\n➖ Описание товара: {good_info[10]}\n\n🏷️ Вам осталось лишь оплатить заказ"
     photo = open(f"images/good_{good_info[0]}.png", "rb")
 
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True)

@@ -3,12 +3,12 @@ import sqlite3
 from . import get
 
 
-async def update(order_id: int, field_name: str, value) -> None:
-    db = sqlite3.connect('bot/database/orders.db')
+async def update(promocode: str, field_name: str, value) -> None:
+    db = sqlite3.connect('bot/database/partners.db')
     cursor = db.cursor()
 
     cursor.execute(
-        f'UPDATE orders SET {field_name} = {value} WHERE order_id = {order_id}')
+        f'UPDATE partners SET {field_name} = {value} WHERE promocode = "{promocode}"')
 
     db.commit()
     cursor.close()
