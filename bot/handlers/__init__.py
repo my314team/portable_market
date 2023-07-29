@@ -4,6 +4,7 @@ from json import loads
 
 from bot.handlers.user import start, product_catalog, category_view, good_view, create_order, about, faq
 from bot.handlers.admin import orders as admin_orders
+from bot.handlers.partners import stats_menu as partners_stats_menu
 
 
 def setup(dp: Dispatcher):
@@ -38,3 +39,6 @@ def setup(dp: Dispatcher):
     dp.register_callback_query_handler(admin_orders.confirm_order,
                                        lambda clb: str(clb.data).startswith('confirmorder_'))
     dp.register_callback_query_handler(admin_orders.bad_order, lambda clb: str(clb.data).startswith('badorder_'))
+
+    """Партнер-панель"""
+    dp.register_message_handler(partners_stats_menu.stats_menu, text="пстата")

@@ -1,4 +1,5 @@
 from aiogram import types
+from aiogram.utils.deep_linking import get_start_link, decode_payload
 
 from ...database.methods.users import get as user_get
 from ...database.methods.users import create as user_create
@@ -9,6 +10,10 @@ from ...logs import logger
 async def start(msg: types.Message) -> None:
     if msg.from_user is None:
         return
+
+    command_args = msg.get_args()
+
+
 
     message = f"Добро пожаловать в <b>Portable Market</b>!\n\n❣️ <b>Portable Market</b> - это магазин цифровых товаров прямо в Telegram с низкими ценами, быстрым получением товаров и скоростной поддержкой.\n\n📰 Канал с новостями: @portable_market"
     photo = open("images/Стартовая картинка.png", "rb")
