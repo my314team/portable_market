@@ -13,6 +13,7 @@ async def connect() -> None:
     except:
         pass
 
+
     db.commit()
 
     cursor.close()
