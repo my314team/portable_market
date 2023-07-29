@@ -45,3 +45,18 @@ async def get_all() -> Union[None, list]:
     db.close()
 
     return result
+
+
+async def get_by_partner_id(tg_id: int) -> Union[None, list]:
+    db = sqlite3.connect('bot/database/orders.db')
+    cursor = db.cursor()
+
+    cursor.execute(
+        f"SELECT * FROM orders WHERE partner_id={tg_id}")
+
+    result = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    return result

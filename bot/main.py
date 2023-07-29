@@ -7,6 +7,7 @@ from .database.methods.users import connect as database_users_connect
 from .database.methods.categories import connect as database_categories_connect
 from .database.methods.goods import connect as database_goods_connect
 from .database.methods.orders import connect as database_orders_connect
+from .database.methods.partners import connect as database_partners_connect
 
 from .logs import logger
 
@@ -25,6 +26,9 @@ async def __on_start_up(dp: Dispatcher) -> None:
 
     await database_orders_connect.connect()
     logger.debug("Подключение к БД (orders.db) успешно выполнено.")
+
+    await database_partners_connect.connect()
+    logger.debug("Подключение к БД (partners.db) успешно выполнено.")
 
 
 def start_bot():
