@@ -42,3 +42,4 @@ def setup(dp: Dispatcher):
 
     """Партнер-панель"""
     dp.register_message_handler(partners_stats_menu.stats_menu, text="пстата")
+    dp.register_callback_query_handler(partners_stats_menu.last_sales, lambda clb: str(clb.data) == 'lastpartnersales')

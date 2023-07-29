@@ -58,12 +58,13 @@ async def stats_menu(msg: types.Message) -> None:
     await msg.answer(text=message, parse_mode="HTML", reply_markup=keyboard)
 
 
-async def last_sales(msg: types.Message) -> None:
+async def last_sales(clb: types.CallbackQuery) -> None:
+    msg = clb.message
     if msg.from_user is None:
         return
 
-    partner_info = await partners_get.get(msg.from_user.id)
-
+    partner_info = await partners_get.get(int(clb.from_user.id))
+    print(partner_info, clb.from_user.id)
     if partner_info is None:
         return
 
@@ -73,14 +74,15 @@ async def last_sales(msg: types.Message) -> None:
         if sale[2] == 1:
             success_partner_sales.append(sale)
 
-    message = f"""Здравствуйте, {msg.from_user.full_name}!
+    message = f"""Здравствуйте, {clb.from_user.full_name}!
 Вы находитесь в панели управления партнеров <a href="t.me/portablemarket_bot">Portable Market</a>
 
-📨 <b>Последние успешные продажи</b>""" + '\n\n'.join(
+📨 <b>Последние успешные продажи</b>\n""" + '\n\n'.join(
         [
-            f'{order[0]}. {(await goods_get.get(order[6]))[2]}\nЦена: {(await goods_get.get(order[6]))[3]}₽\nЧистый доход: <>₽\nВаша прибыль: <>₽'
-            for order in success_partner_sales])
+            f'{order[0]}. {(await goods_get.get(order[6]))[2]}\nЦена: {(await goods_get.get(order[6]))[3]}₽\nЧистый доход: {int((await goods_get.get(order[6]))[11])}₽\nВаша прибыль: {int((await goods_get.get(order[6]))[11] / 2)}₽'
+            for order in success_partner_sales] if success_partner_sales else ['оплаченных товары пока нет'])
 
+    print(message)
     keyboard_structure = [
         [
             types.InlineKeyboardButton(text="Последние продажи", callback_data="lastpartnersales"),
@@ -89,4 +91,4 @@ async def last_sales(msg: types.Message) -> None:
 
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=keyboard_structure)
 
-    await msg.answer(text=message, parse_mode="HTML", reply_markup=keyboard)
+    await clb.message.answer(text=message, parse_mode="HTML")
