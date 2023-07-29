@@ -4,6 +4,9 @@ from aiogram.utils.deep_linking import get_start_link, decode_payload
 from ...database.methods.users import get as user_get
 from ...database.methods.users import create as user_create
 
+from ...database.methods.partners import update as partners_update
+from ...database.methods.partners import get as partners_get
+
 from ...logs import logger
 
 
@@ -12,8 +15,6 @@ async def start(msg: types.Message) -> None:
         return
 
     command_args = msg.get_args()
-
-
 
     message = f"Добро пожаловать в <b>Portable Market</b>!\n\n❣️ <b>Portable Market</b> - это магазин цифровых товаров прямо в Telegram с низкими ценами, быстрым получением товаров и скоростной поддержкой.\n\n📰 Канал с новостями: @portable_market"
     photo = open("images/Стартовая картинка.png", "rb")
@@ -31,7 +32,12 @@ async def start(msg: types.Message) -> None:
     user_info = await user_get.get(int(msg.from_user.id))
 
     if user_info is None:
-        user_info = await user_create.create(int(msg.from_user.id))
+        user_info = await user_create.create(int(msg.from_user.id), promocode=command_args if command_args else 'ADMIN')
+        if command_args:
+            try:
+                await partners_update.update(command_args, "total_users", (await partners_get.get_by_promo(command_args))[7] + 1)
+            except Exception as ERROR:
+                logger.error(f"Ошибка при добавлении пользователя к партнеру: {ERROR}")
         try:
             logger.debug(
                 f"В системе зарегистрирован новый пользователь. TG_ID: {user_info[1]}, USER_ID: {user_info[0]}")

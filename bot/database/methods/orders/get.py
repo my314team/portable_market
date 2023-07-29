@@ -47,12 +47,12 @@ async def get_all() -> Union[None, list]:
     return result
 
 
-async def get_by_partner_id(tg_id: int) -> Union[None, list]:
+async def get_by_partner_id(partner_id: str) -> Union[None, list]:
     db = sqlite3.connect('bot/database/orders.db')
     cursor = db.cursor()
 
     cursor.execute(
-        f"SELECT * FROM orders WHERE partner_id={tg_id}")
+        f'SELECT * FROM orders WHERE partner_id="{partner_id.upper()}"')
 
     result = cursor.fetchall()
 

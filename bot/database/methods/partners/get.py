@@ -19,6 +19,23 @@ async def get(tg_id: int) -> Union[None, list]:
 
     return result
 
+async def get_by_promo(promocode: str) -> Union[None, list]:
+    db = sqlite3.connect('bot/database/partners.db')
+    cursor = db.cursor()
+
+    cursor.execute(
+        f'SELECT * FROM partners WHERE promocode="{promocode}"')
+
+    try:
+        result = cursor.fetchall()[-1]
+    except IndexError:
+        return
+
+    cursor.close()
+    db.close()
+
+    return result
+
 
 async def get_all() -> Union[None, list]:
     db = sqlite3.connect('bot/database/partners.db')

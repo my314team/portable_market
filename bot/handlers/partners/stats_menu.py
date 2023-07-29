@@ -52,10 +52,11 @@ async def stats_menu(msg: types.Message) -> None:
             types.InlineKeyboardButton(text="Последние продажи", callback_data="lastpartnersales"),
         ],
     ]
-
+    photo_url = 'images/Партнерская программа.png'
+    photo = open(photo_url, "rb")
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=keyboard_structure)
 
-    await msg.answer(text=message, parse_mode="HTML", reply_markup=keyboard)
+    await msg.answer_photo(photo, caption=message, parse_mode="HTML", reply_markup=keyboard)
 
 
 async def last_sales(clb: types.CallbackQuery) -> None:
@@ -64,15 +65,15 @@ async def last_sales(clb: types.CallbackQuery) -> None:
         return
 
     partner_info = await partners_get.get(int(clb.from_user.id))
-    print(partner_info, clb.from_user.id)
     if partner_info is None:
         return
 
-    all_partner_sales = await orders_get.get_by_partner_id(int(partner_info[0]))
+    all_partner_sales = await orders_get.get_by_partner_id(partner_info[3])
     success_partner_sales = []
     for sale in all_partner_sales:
         if sale[2] == 1:
             success_partner_sales.append(sale)
+    success_partner_sales = success_partner_sales[::-1][:5]
 
     message = f"""Здравствуйте, {clb.from_user.full_name}!
 Вы находитесь в панели управления партнеров <a href="t.me/portablemarket_bot">Portable Market</a>
@@ -82,13 +83,14 @@ async def last_sales(clb: types.CallbackQuery) -> None:
             f'{order[0]}. {(await goods_get.get(order[6]))[2]}\nЦена: {(await goods_get.get(order[6]))[3]}₽\nЧистый доход: {int((await goods_get.get(order[6]))[11])}₽\nВаша прибыль: {int((await goods_get.get(order[6]))[11] / 2)}₽'
             for order in success_partner_sales] if success_partner_sales else ['оплаченных товары пока нет'])
 
-    print(message)
     keyboard_structure = [
         [
-            types.InlineKeyboardButton(text="Последние продажи", callback_data="lastpartnersales"),
+            types.InlineKeyboardButton(text="пстата", url="google.ru"),
         ],
     ]
+    photo_url = 'images/Партнерская программа.png'
+    photo = open(photo_url, "rb")
 
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=keyboard_structure)
 
-    await clb.message.answer(text=message, parse_mode="HTML")
+    await clb.message.answer_photo(photo, caption=message, parse_mode="HTML")

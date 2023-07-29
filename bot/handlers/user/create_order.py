@@ -13,6 +13,9 @@ from ...database.methods.orders import create as orders_create
 from ...database.methods.orders import get as orders_get
 from ...database.methods.orders import update as orders_update
 
+from ...database.methods.partners import update as partners_update
+from ...database.methods.partners import get as partners_get
+
 from ...logs import logger
 
 api = AnyPayAPI(
@@ -60,7 +63,8 @@ async def create_order(clb: types.CallbackQuery) -> None:
     if user_id != clb.from_user.id:
         return
 
-    order_info = await orders_create.create(user_id, good_id)
+    partner_id = (await user_get.get(clb.from_user.id))[7]
+    order_info = await orders_create.create(user_id, partner_id, good_id)
 
     if order_info is None:
         logger.error(
@@ -69,9 +73,10 @@ async def create_order(clb: types.CallbackQuery) -> None:
 
     logger.debug(f"order_info: {order_info}")
 
-    good_info = await goods_get.get(int(order_info[-1]))
+    good_info = await goods_get.get(int(order_info[6]))
 
-    pay_id, order_url = await anypay_create_order(order_info[0], int(good_info[3]))
+    pay_id, order_url = await anypay_create_order(order_info[0], int(
+        good_info[3] * (1 - (await partners_get.get_by_promo((await user_get.get(clb.from_user.id))[7]))[5] / 100)))
 
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True)
     buttons = [
@@ -114,13 +119,28 @@ async def checkpaygood(clb: types.CallbackQuery) -> None:
 
     if not order_is_paid:
         await clb.answer('Платеж еще не поступил', show_alert=True)
-        return
+
         # await clb.message.edit_media(types.InputMedia(media=types.InputFile(f"images/Оплата не прошла.png")))
         # await clb.message.edit_caption(
         #    '🚫 Оплата за заказ (№) еще не поступила.\b⚠️ Возможно, вы не оплатили, или оплата еще не дошла до нас.\n\nЕсли вы оплатили, но получили это сообщение, смотрите раздел <b>вопрос-ответ.</b>',
         #    parse_mode="HTML", reply_markup=keyboard)
 
     await orders_update.update(check_order_id, 'status', 1)
+
+    try:
+        await partners_update.update((await user_get.get(clb.from_user.id))[7], "total_sales",
+                                     (await partners_get.get_by_promo((await user_get.get(clb.from_user.id))[7]))[
+                                         6] + 1)
+        await partners_update.update((await user_get.get(clb.from_user.id))[7], "all_income",
+                                     (await partners_get.get_by_promo((await user_get.get(clb.from_user.id))[7]))[
+                                         8] + (await goods_get.get(order_info[6]))[11] // 2)
+
+        await partners_update.update((await user_get.get(clb.from_user.id))[7], "income_left",
+                                     (await partners_get.get_by_promo((await user_get.get(clb.from_user.id))[7]))[
+                                         9] + (await goods_get.get(order_info[6]))[11] // 2)
+    except Exception as ERROR:
+        logger.error(f"Ошибка при обновлении данных партнера: {ERROR}")
+
     await clb.message.answer(
         f'✅ Вы успешно оплатили заказ (№{check_order_id}).\n\nСовсем скоро вы получите свой товар, ожидайте.\n❓ По любым вопросам задержки обращайтесь в службу поддержки: @pmarket_support')
     logger.success(f'Оплачен новый заказ №{check_order_id}')
