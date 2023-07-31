@@ -13,8 +13,6 @@ async def connect() -> None:
     except:
         pass
 
-    # cursor.execute('UPDATE users SET partner_id="ADMIN"')
-
     db.commit()
 
     cursor.close()
