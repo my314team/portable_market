@@ -17,6 +17,7 @@ from ...database.methods.partners import update as partners_update
 from ...database.methods.partners import get as partners_get
 
 from ...logs import logger
+from ...config import get_bot, ORDERS_CHAT_ID
 
 api = AnyPayAPI(
     '34F5E0FD201BAE1485', 'qEEAhEIgwJRv1LrmWSvEUIJRirDgox8ikWV3U9A', check=False,  # you can disable credentials check
@@ -144,3 +145,6 @@ async def checkpaygood(clb: types.CallbackQuery) -> None:
     await clb.message.answer(
         f'✅ Вы успешно оплатили заказ (№{check_order_id}).\n\nСовсем скоро вы получите свой товар, ожидайте.\n❓ По любым вопросам задержки обращайтесь в службу поддержки: @pmarket_support')
     logger.success(f'Оплачен новый заказ №{check_order_id}')
+
+    await get_bot().send_message(protect_content=True, parse_mode="HTML", chat_id=ORDERS_CHAT_ID,
+                                 text=f"Оплачен новый заказ №{check_order_id}\n\nПокупатель: @{clb.from_user.username}, №{(await user_get.get(clb.from_user.id))[0]}\nСумма заказа: {(await goods_get.get(order_info[6]))[3]}₽")
