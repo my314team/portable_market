@@ -28,5 +28,5 @@ async def get_all() -> Union[None, list]:
 
     cursor.close()
     db.close()
-
+    print(result)
     return result

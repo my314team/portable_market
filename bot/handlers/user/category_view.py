@@ -30,9 +30,13 @@ async def category_view(clb: types.CallbackQuery) -> None:
 
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
     buttons = [
-        types.InlineKeyboardButton(text=f"{g[2]} — {g[3]}₽", callback_data=f"good_{g[0]}") for g in
+        types.InlineKeyboardButton(text=f"{g[2]} | {g[3]}₽", callback_data=f"good_{g[0]}") for g in
         (await goods_get.get_all_from_category(category_info[0]))
     ]
+    buttons = buttons[:9]
+    buttons.append(
+        types.InlineKeyboardButton(text=f"◀️ Назад", callback_data="to_categories")
+    )
     keyboard.add(*buttons)
 
     user_info = await user_get.get(int(clb.from_user.id))

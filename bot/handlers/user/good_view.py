@@ -25,13 +25,18 @@ async def good_view(clb: types.CallbackQuery) -> None:
     message = f"Товар: <b>{good_info[2]}</b>\nВаша цена: {good_info[3] * (1 - (await partners_get.get_by_promo((await user_get.get(clb.from_user.id))[7]))[5] / 100)} <s>{good_info[3]}</s>₽\n\n➖ Описание товара: {good_info[10]}\n\n🏷️ Вам осталось лишь оплатить заказ"
     photo = open(f"images/good_{good_info[0]}.png", "rb")
 
-    keyboard = types.InlineKeyboardMarkup(resize_keyboard=True)
+    keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=2)
 
     buttons = [
         types.InlineKeyboardButton(text=f"Оплатить", callback_data=f"create_order_{clb.from_user.id}_{good_info[0]}"),
         types.InlineKeyboardButton(text=f"Проверить оплату", callback_data=f"checkpaygood_{good_info[0]}")
 
     ]
+    buttons = buttons[:9]
+    buttons.append(
+        types.InlineKeyboardButton(text=f"◀️ Назад",
+                                   callback_data=f"category_{(await categories_get.get_all())[good_info[4] - 1][1]}")
+    )
     keyboard.add(*buttons)
 
     user_info = await user_get.get(int(clb.from_user.id))
