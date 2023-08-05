@@ -1,3 +1,4 @@
+import aiogram.utils.exceptions
 from aiogram import types
 
 from ...database.methods.users import get as user_get
@@ -107,9 +108,11 @@ async def how_to_order(clb: types.CallbackQuery) -> None:
                 "bot_off")
 
                ]
-
-    await clb.message.edit_caption(f"<b>Вопрос</b>\n{message[0][0]}\n\n<b>Ответ</b>\n{message[0][1]}",
-                                   parse_mode="HTML", reply_markup=get_qa_keyboard())
+    try:
+        await clb.message.edit_caption(f"<b>Вопрос</b>\n{message[0][0]}\n\n<b>Ответ</b>\n{message[0][1]}",
+                                       parse_mode="HTML", reply_markup=get_qa_keyboard())
+    except aiogram.utils.exceptions.MessageNotModified:
+        pass
 
 
 async def good_not_found(clb: types.CallbackQuery) -> None:
@@ -138,9 +141,11 @@ async def good_not_found(clb: types.CallbackQuery) -> None:
                 "bot_off")
 
                ]
-
-    await clb.message.edit_caption(f"<b>Вопрос</b>\n{message[1][0]}\n\n<b>Ответ</b>\n{message[1][1]}",
-                                   parse_mode="HTML", reply_markup=get_qa_keyboard())
+    try:
+        await clb.message.edit_caption(f"<b>Вопрос</b>\n{message[1][0]}\n\n<b>Ответ</b>\n{message[1][1]}",
+                                       parse_mode="HTML", reply_markup=get_qa_keyboard())
+    except aiogram.utils.exceptions.MessageNotModified:
+        pass
 
 
 async def how_to_use_promo(clb: types.CallbackQuery) -> None:
@@ -169,9 +174,11 @@ async def how_to_use_promo(clb: types.CallbackQuery) -> None:
                 "bot_off")
 
                ]
-
-    await clb.message.edit_caption(f"<b>Вопрос</b>\n{message[2][0]}\n\n<b>Ответ</b>\n{message[2][1]}",
-                                   parse_mode="HTML", reply_markup=get_qa_keyboard())
+    try:
+        await clb.message.edit_caption(f"<b>Вопрос</b>\n{message[2][0]}\n\n<b>Ответ</b>\n{message[2][1]}",
+                                       parse_mode="HTML", reply_markup=get_qa_keyboard())
+    except aiogram.utils.exceptions.MessageNotModified:
+        pass
 
 
 async def payment_not_work(clb: types.CallbackQuery) -> None:
@@ -201,8 +208,11 @@ async def payment_not_work(clb: types.CallbackQuery) -> None:
 
                ]
 
-    await clb.message.edit_caption(f"<b>Вопрос</b>\n{message[3][0]}\n\n<b>Ответ</b>\n{message[3][1]}",
-                                   parse_mode="HTML", reply_markup=get_qa_keyboard())
+    try:
+        await clb.message.edit_caption(f"<b>Вопрос</b>\n{message[3][0]}\n\n<b>Ответ</b>\n{message[3][1]}",
+                                       parse_mode="HTML", reply_markup=get_qa_keyboard())
+    except aiogram.utils.exceptions.MessageNotModified:
+        pass
 
 
 async def no_money_sent(clb: types.CallbackQuery) -> None:
@@ -232,8 +242,11 @@ async def no_money_sent(clb: types.CallbackQuery) -> None:
 
                ]
 
-    await clb.message.edit_caption(f"<b>Вопрос</b>\n{message[4][0]}\n\n<b>Ответ</b>\n{message[4][1]}",
-                                   parse_mode="HTML", reply_markup=get_qa_keyboard())
+    try:
+        await clb.message.edit_caption(f"<b>Вопрос</b>\n{message[4][0]}\n\n<b>Ответ</b>\n{message[4][1]}",
+                                       parse_mode="HTML", reply_markup=get_qa_keyboard())
+    except aiogram.utils.exceptions.MessageNotModified:
+        pass
 
 
 async def bot_off(clb: types.CallbackQuery) -> None:
@@ -263,8 +276,11 @@ async def bot_off(clb: types.CallbackQuery) -> None:
 
                ]
 
-    await clb.message.edit_caption(f"<b>Вопрос</b>\n{message[5][0]}\n\n<b>Ответ</b>\n{message[5][1]}",
-                                   parse_mode="HTML", reply_markup=get_qa_keyboard())
+    try:
+        await clb.message.edit_caption(f"<b>Вопрос</b>\n{message[5][0]}\n\n<b>Ответ</b>\n{message[5][1]}",
+                                       parse_mode="HTML", reply_markup=get_qa_keyboard())
+    except aiogram.utils.exceptions.MessageNotModified:
+        pass
 
 
 async def reviews(msg: types.Message) -> None:
