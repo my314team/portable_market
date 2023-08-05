@@ -91,6 +91,6 @@ async def last_sales(clb: types.CallbackQuery) -> None:
     photo_url = 'images/Партнерская программа.png'
     photo = open(photo_url, "rb")
 
-    keyboard = types.InlineKeyboardMarkup(inline_keyboard=keyboard_structure)
+    # keyboard = types.InlineKeyboardMarkup(inline_keyboard=keyboard_structure)
 
     await clb.message.answer_photo(photo, caption=message, parse_mode="HTML")
