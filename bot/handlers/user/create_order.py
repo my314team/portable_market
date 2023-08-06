@@ -143,7 +143,7 @@ async def checkpaygood(clb: types.CallbackQuery) -> None:
         logger.error(f"Ошибка при обновлении данных партнера: {ERROR}")
 
     await clb.message.answer(
-        f'✅ Вы успешно оплатили заказ (№{check_order_id}).\n\nСовсем скоро вы получите свой товар, ожидайте.\n❓ По любым вопросам задержки обращайтесь в службу поддержки: @pmarket_support')
+        f'✅ Вы успешно оплатили заказ (№{check_order_id}).\n\nЗаказ поступил в обработку. Совсем скоро Вы получите свой товар, а также пришлем инструкцию по активации, ожидайте.\n❓ По любым вопросам задержки (больше 3 часов с момента покупки) обращайтесь в службу поддержки: @pmarket_support')
     logger.success(f'Оплачен новый заказ №{check_order_id}')
 
     await get_bot().send_message(protect_content=True, parse_mode="HTML", chat_id=ORDERS_CHAT_ID,
