@@ -106,11 +106,11 @@ async def checkpaygood(clb: types.CallbackQuery) -> None:
         await clb.answer("Нажмите кнопку Оплатить")
         return
 
-    if check_order_id != order_info[0]:
-        # нарушение валидации запросов
-        logger.error(
-            f"Пользователь TG_ID: {clb.from_user.id} пытался выполнить заказ с другим номером. Последний заказ: {order_info[0]}, обрабатываевый {check_order_id}.")
-        return
+    # if check_order_id != order_info[0]:
+    #    # нарушение валидации запросов
+    #    logger.error(
+    #        f"Пользователь TG_ID: {clb.from_user.id} пытался выполнить заказ с другим номером. Последний заказ: {order_info[0]}, обрабатываевый {check_order_id}.")
+    #    return
 
     if order_info[2] == 1:
         await clb.answer('Платеж оплачен, товар в процессе выдачи', show_alert=True)
