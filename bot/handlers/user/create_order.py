@@ -121,7 +121,7 @@ async def checkpaygood(clb: types.CallbackQuery) -> None:
     if not order_is_paid:
         await clb.answer('Платеж еще не поступил', show_alert=True)
         return
-        # await clb.message.edit_media(types.InputMedia(media=types.InputFile(f"images/Оплата не прошла.png")))
+        ## await clb.message.edit_media(types.InputMedia(media=types.InputFile(f"images/Оплата не прошла.png")))
         # await clb.message.edit_caption(
         #    '🚫 Оплата за заказ (№) еще не поступила.\b⚠️ Возможно, вы не оплатили, или оплата еще не дошла до нас.\n\nЕсли вы оплатили, но получили это сообщение, смотрите раздел <b>вопрос-ответ.</b>',
         #    parse_mode="HTML", reply_markup=keyboard)
