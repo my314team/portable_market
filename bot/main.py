@@ -9,6 +9,8 @@ from .database.methods.goods import connect as database_goods_connect
 from .database.methods.orders import connect as database_orders_connect
 from .database.methods.partners import connect as database_partners_connect
 
+from .utils.events.daily_sales import sales
+
 from .logs import logger
 
 from .config import get_bot
