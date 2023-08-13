@@ -1,0 +1,20 @@
+{
+    "settings": 
+    {
+        "discounts":
+        [
+            {
+                "good_id": 9,
+                "discount_amount": 50  
+            },
+            {
+                "good_id": 1,
+                "discount_amount": 100  
+            },
+            {
+                "good_id": 14,
+                "discount_amount": 200  
+            }
+        ]
+    }
+}
