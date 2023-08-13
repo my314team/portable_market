@@ -12,7 +12,7 @@ scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
 
 from .... import config
 
-CHANNEL_ID = -1001875711252
+CHANNEL_ID = -1001966002567
 
 
 def get_sale(sale_name: str) -> dict:
@@ -36,8 +36,6 @@ async def post_sale(bot):
     sale = get_sale(get_random_sale())
     photo = InputFile(sale['preview'])
 
-    print(sale['settings'])
-
     for discount in sale['settings']['discounts']:
         await goods_update.update(discount['good_id'], 'discount_id', discount['discount_amount'])
         logger.info(
@@ -49,6 +47,6 @@ async def post_sale(bot):
                          photo=photo)
 
 
-scheduler.add_job(post_sale, trigger="interval", seconds=3,
+scheduler.add_job(post_sale, trigger="cron", hour=10, minute=0,
                   kwargs={'bot': config.get_bot()})
 scheduler.start()
