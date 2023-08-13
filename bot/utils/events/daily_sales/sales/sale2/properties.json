@@ -5,11 +5,11 @@
         [
             {
                 "good_id": 9,
-                "discount_amount": 50  
+                "discount_amount": 10
             },
             {
                 "good_id": 1,
-                "discount_amount": 100  
+                "discount_amount": 10
             },
             {
                 "good_id": 14,

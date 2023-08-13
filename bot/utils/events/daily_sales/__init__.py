@@ -4,6 +4,9 @@ import random
 
 from aiogram.types import InputFile
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from ....logs import logger
+
+from ....database.methods.goods import update as goods_update
 
 scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
 
@@ -33,7 +36,12 @@ async def post_sale(bot):
     sale = get_sale(get_random_sale())
     photo = InputFile(sale['preview'])
 
+    print(sale['settings'])
 
+    for discount in sale['settings']['discounts']:
+        await goods_update.update(discount['good_id'], 'discount_id', discount['discount_amount'])
+        logger.info(
+            f"[Таверна скидок] Обновлена скидка на товар №{discount['good_id']} до {discount['discount_amount']} руб.")
 
     await bot.send_photo(chat_id=CHANNEL_ID,
                          caption='👀 Таверна скидка — это ваша возможность приобрести давно желаемую игру или подписку со скидкой. Предложения меняются ежедневно.\n\n<a href="https://t.me/portablemarket_bot">▶ Перейти в магазин</a>',

@@ -76,8 +76,10 @@ async def create_order(clb: types.CallbackQuery) -> None:
 
     good_info = await goods_get.get(int(order_info[6]))
 
-    pay_id, order_url = await anypay_create_order(order_info[0], int(
-        good_info[3] * (1 - (await partners_get.get_by_promo((await user_get.get(clb.from_user.id))[7]))[5] / 100)))
+    # pay_id, order_url = await anypay_create_order(order_info[0], int(good_info[3] * (1 - (await partners_get.get_by_promo((await user_get.get(clb.from_user.id))[7]))[5] / 100)))
+    # Временно убран партнерский бонус
+
+    pay_id, order_url = await anypay_create_order(order_info[0], int(good_info[3] - good_info[6]))
 
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True)
     buttons = [
