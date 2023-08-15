@@ -35,7 +35,8 @@ async def start(msg: types.Message) -> None:
         user_info = await user_create.create(int(msg.from_user.id), promocode=command_args if command_args else 'ADMIN')
         if command_args:
             try:
-                await partners_update.update(command_args, "total_users", (await partners_get.get_by_promo(command_args))[7] + 1)
+                await partners_update.update(command_args, "total_users",
+                                             (await partners_get.get_by_promo(command_args))[7] + 1)
             except Exception as ERROR:
                 logger.error(f"Ошибка при добавлении пользователя к партнеру: {ERROR}")
         try:
