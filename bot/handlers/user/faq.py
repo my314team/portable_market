@@ -1,12 +1,7 @@
 import aiogram.utils.exceptions
 from aiogram import types
 
-from ...database.methods.users import get as user_get
-from ...database.methods.users import create as user_create
-
-from ...database.methods.categories import get as categories_get
-
-from ...logs import logger
+from ... import config
 
 
 def get_qa_keyboard():
@@ -290,7 +285,7 @@ async def reviews(msg: types.Message) -> None:
     photo = open("images/Отзывы.png", "rb")
 
     await msg.answer_photo(photo=photo,
-                           caption='Сомневаетесь в покупке в <a href="https://t.me/portable_market">нашем магазине</a>? Можете довериться нам, ознакомившись с отзывами наших клиентов!\n\n<a href="https://t.me/pm_reviews">▶️ Перейти к отзывам</a>',
+                           caption=f'Сомневаетесь в покупке в <a href="{config.SHOP_NEWS_CHANNEL_URL}">нашем магазине</a>? Можете довериться нам, ознакомившись с отзывами наших клиентов!\n\n<a href="{config.SHOP_REVIEWS_URL}">▶️ Перейти к отзывам</a>',
                            parse_mode="HTML")
 
 
@@ -301,5 +296,5 @@ async def support(msg: types.Message) -> None:
     photo = open("images/Поддержка.png", "rb")
 
     await msg.answer_photo(photo=photo,
-                           caption='🤖 Вы обращаетесь в раздел помощи <a href="https://t.me/portable_market">Portable Market</a>.\nДля начала попробуйте найти Ваш вопрос в разделе "Вопрос-Ответ" (кнопка ниже)\n\n 🤔 Не нашли? Попробуйте обратиться к нашей технической поддержке: <a href="https://t.me/pmarket_support">написать</a> (отвечаем с 10 до 18 по МСК)',
+                           caption=f'🤖 Вы обращаетесь в раздел помощи <a href="{config.SHOP_NEWS_CHANNEL_URL}">{config.SHOP_NAME}</a>.\nДля начала попробуйте найти Ваш вопрос в разделе "Вопрос-Ответ" (кнопка ниже)\n\n 🤔 Не нашли? Попробуйте обратиться к нашей технической поддержке: <a href="{config.SHOP_SUPPORT_URL}">написать</a> (отвечаем с 10 до 18 по МСК)',
                            parse_mode="HTML")

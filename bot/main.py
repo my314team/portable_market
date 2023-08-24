@@ -9,11 +9,9 @@ from .database.methods.goods import connect as database_goods_connect
 from .database.methods.orders import connect as database_orders_connect
 from .database.methods.partners import connect as database_partners_connect
 
-from .utils.events.daily_sales import sales
-
 from .logs import logger
 
-from .config import get_bot
+from .config import get_bot, IS_ENABLED
 
 
 async def __on_start_up(dp: Dispatcher) -> None:
@@ -34,6 +32,10 @@ async def __on_start_up(dp: Dispatcher) -> None:
 
 
 def start_bot():
+    if not IS_ENABLED:
+        logger.error("Бот отключен в настройках. Для включения перейдите в bot/config.py и измените значение IS_ENABLED на true.")
+        return
+
     dp = Dispatcher(get_bot(), storage=MemoryStorage())
 
     handlers.setup(dp)

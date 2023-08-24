@@ -1,5 +1,4 @@
 from aiogram import types
-from aiogram.utils.deep_linking import get_start_link, decode_payload
 
 from ...database.methods.users import get as user_get
 from ...database.methods.users import create as user_create
@@ -9,6 +8,8 @@ from ...database.methods.partners import get as partners_get
 
 from ...logs import logger
 
+from ... import config
+
 
 async def start(msg: types.Message) -> None:
     if msg.from_user is None:
@@ -16,7 +17,7 @@ async def start(msg: types.Message) -> None:
 
     command_args = msg.get_args()
 
-    message = f"Добро пожаловать в <b>Portable Market</b>!\n\n❣️ <b>Portable Market</b> - это магазин цифровых товаров прямо в Telegram с низкими ценами, быстрым получением товаров и скоростной поддержкой.\n\n📰 Канал с новостями: @portable_market"
+    message = f'Добро пожаловать в <b>{config.SHOP_NAME}</b>!\n\n❣️ <b>{config.SHOP_NAME}</b> - это магазин цифровых товаров прямо в Telegram с низкими ценами, быстрым получением товаров и скоростной поддержкой.\n\n📰 <a href="{config.SHOP_NEWS_CHANNEL_URL}">Канал с новостями</a>'
     photo = open("images/Стартовая картинка.png", "rb")
 
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
