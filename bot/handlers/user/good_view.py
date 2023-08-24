@@ -7,7 +7,6 @@ from ...database.methods.users import create as user_create
 from ...database.methods.categories import get as categories_get
 
 from ...database.methods.goods import get as goods_get
-from ...database.methods.partners import get as partners_get
 
 from ...logs import logger
 
@@ -26,8 +25,6 @@ async def good_view(clb: types.CallbackQuery) -> None:
     # Со скидкой партнера, временно убрано
 
     message = f"Товар: <b>{good_info[2]}</b>\nЦена: {good_info[3] - good_info[6]} <s>{good_info[3]}</s>₽\n\n➖ Описание товара: {good_info[10]}\n\n🏷️ Вам осталось лишь оплатить заказ"
-
-    photo = open(f"images/good_{good_info[0]}.png", "rb")
 
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=2)
 

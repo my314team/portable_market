@@ -1,24 +1,19 @@
+import os
 from aiogram import types
-
 from anypay import AnyPayAPI, AnyPayAPIError
 
 from ...database.methods.users import get as user_get
-from ...database.methods.users import create as user_create
-
-from ...database.methods.categories import get as categories_get
-
 from ...database.methods.goods import get as goods_get
-
-from ...database.methods.orders import create as orders_create
 from ...database.methods.orders import get as orders_get
 from ...database.methods.orders import update as orders_update
 
 from ...logs import logger
-
 from ...config import get_bot
 
+# Перед использованием проверьте и изучите настройки
+# платежной системы
 api = AnyPayAPI(
-    '34F5E0FD201BAE1485', 'qEEAhEIgwJRv1LrmWSvEUIJRirDgox8ikWV3U9A', check=False,  # you can disable credentials check
+    os.environ["ANYPAY_APP_ID"], os.environ["ANYPAY_KEY"], check=False,
 )
 
 
@@ -32,16 +27,14 @@ async def anypay_create_order(order_id: int, amount_id: int):
     bill = await api.create_bill(  # easier way to create payment via SCI
         pay_id=order_id,
         amount=amount_id,
-        project_id=11981,
-        project_secret='SHwmVER23M3XKEh3C7',
+        project_id=int(os.environ["ANYPAY_PROJECT_ID"]),
+        project_secret=os.environ["ANYPAY_PROJECT_SECRET"],
     )
-    print(bill)
     return bill.id, bill.url
 
 
 async def anypay_check_order(pay_id: int) -> bool:
-    payments = await api.get_payments(project_id=11981, pay_id=pay_id)
-    print(payments)
+    payments = await api.get_payments(project_id=int(os.environ["ANYPAY_PROJECT_ID"]), pay_id=pay_id)
     is_paid = False
 
     for payment in payments:
@@ -172,5 +165,5 @@ async def bad_order(clb: types.CallbackQuery):
     await orders_update.update(order_id, "status", 1)
     await clb.message.answer(text=f"🔒 Заказ (№{order_id}) отправлен на уточнение.\nОжидайте ответа.")
     logger.debug(f"🔎 Заказ (№{order_id}) успешно завершен.")
-    await get_bot().send_message(protect_content=True, parse_mode="HTML", chat_id=1969225718,
+    await get_bot().send_message(protect_content=True, parse_mode="HTML", chat_id=int(os.environ["ADMIN_CHAT_ID"]),
                                  text=f"❗️ Поступило возражение по заказу (№{order_id})!")

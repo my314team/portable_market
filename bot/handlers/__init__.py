@@ -1,7 +1,5 @@
 from aiogram import Dispatcher
 
-from json import loads
-
 from bot.handlers.user import start, product_catalog, category_view, good_view, create_order, about, faq
 from bot.handlers.admin import orders as admin_orders
 from bot.handlers.partners import stats_menu as partners_stats_menu

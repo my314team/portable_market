@@ -1,18 +1,16 @@
 from aiogram import types
 
-from ...database.methods.users import get as user_get
-from ...database.methods.users import create as user_create
-
 from ...database.methods.partners import get as partners_get
-
 from ...database.methods.orders import get as orders_get
-
 from ...database.methods.goods import get as goods_get
 
-from ...logs import logger
+from ... import config
 
 
 async def stats_menu(msg: types.Message) -> None:
+    if not config.IS_PARTNERS_SYSTEM_ENABLED:
+        return
+
     if msg.from_user is None:
         return
 
@@ -22,11 +20,11 @@ async def stats_menu(msg: types.Message) -> None:
         return
 
     message = f"""Здравствуйте, {msg.from_user.full_name}!
-Вы находитесь в панели управления партнеров <a href="t.me/portablemarket_bot">Portable Market</a>
+Вы находитесь в панели управления партнеров <a href="{config.SHOP_BOT_URL}">{config.SHOP_NAME}</a>
 
 🔎 <b>Основная информация</b>
 ●  Ваш промокод: <code>{partner_info[4].upper()}</code> (нажмите, чтобы скопировать)
-●  Пригласительная ссылка: https://t.me/portablemarket_bot?start={partner_info[4].upper()}
+●  Пригласительная ссылка: {config.SHOP_BOT_URL}?start={partner_info[4].upper()}
 ●  Привилегии: Скидка {partner_info[5]}% на любой заказ по Вашему промокоду
 ●  Ссылка на проект: {partner_info[10]}
 ●  Тип: {partner_info[11]}
@@ -76,21 +74,14 @@ async def last_sales(clb: types.CallbackQuery) -> None:
     success_partner_sales = success_partner_sales[::-1][:5]
 
     message = f"""Здравствуйте, {clb.from_user.full_name}!
-Вы находитесь в панели управления партнеров <a href="t.me/portablemarket_bot">Portable Market</a>
+Вы находитесь в панели управления партнеров <a href="{config.SHOP_NEWS_CHANNEL_URL}">{config.SHOP_NAME}</a>
 
 📨 <b>Последние успешные продажи</b>\n""" + '\n\n'.join(
         [
             f'{order[0]}. {(await goods_get.get(order[6]))[2]}\nЦена: {(await goods_get.get(order[6]))[3]}₽\nЧистый доход: {int((await goods_get.get(order[6]))[11])}₽\nВаша прибыль: {int((await goods_get.get(order[6]))[11] / 2)}₽'
             for order in success_partner_sales] if success_partner_sales else ['оплаченных товары пока нет'])
 
-    keyboard_structure = [
-        [
-            types.InlineKeyboardButton(text="пстата", url="google.ru"),
-        ],
-    ]
     photo_url = 'images/Партнерская программа.png'
     photo = open(photo_url, "rb")
-
-    # keyboard = types.InlineKeyboardMarkup(inline_keyboard=keyboard_structure)
 
     await clb.message.answer_photo(photo, caption=message, parse_mode="HTML")
