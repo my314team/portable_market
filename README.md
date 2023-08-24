@@ -15,6 +15,8 @@ Open-source Telegram бот онлайн магазина для продажи 
 9. Поддержка SQLite базы данных
 10. Автоматическая система логирования с помощью библиотеки [loguru](https://github.com/Delgan/loguru)
 
+![github_header](https://github.com/avidm0de/portable_market/assets/88634741/21e4bf47-b59b-4c9c-b8c0-feb73c1dfc82)
+
 ## Установка
 Для работы необходим Python 3.8+ (желательно 3.9+)
 
