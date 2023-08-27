@@ -23,8 +23,9 @@ SHOP_REVIEWS_URL = "https://t.me/portable_market"
 # Ссылка на пользовательское соглашение
 SHOP_USER_AGREEMENT_URL = "https://t.me/portable_market"
 
+
 # Айди канала, куда приходит информация о заказах
-ORDERS_CHAT_ID = -1
+ORDERS_CHAT_ID = -883193340
 
 
 def get_bot():
